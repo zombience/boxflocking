@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class FlockManager : MonoBehaviour 
 {
 
-	public int boxCount;
+	public int boxCountX,boxCountY,boxCountZ;
 	public FlockBox[,,] boxes;
 	public Transform lowerBound;
 	public Transform upperBound;
@@ -23,16 +23,17 @@ public class FlockManager : MonoBehaviour
 	{
 		instance = this;
 		settings = flockSettings;
-		boxes = new FlockBox[boxCount, boxCount, boxCount];
+		flockSettings.range = (upperBound.position.x - lowerBound.position.x) / boxCountX;
+		boxes = new FlockBox[boxCountX, boxCountY, boxCountZ];
 
-		for(int i = 0; i < boxCount; i ++)
+		for(int i = 0; i < boxCountX; i ++)
 		{
-			for(int j = 0; j < boxCount; j ++)
+			for(int j = 0; j < boxCountY; j ++)
 			{
-				for(int k = 0; k < boxCount; k ++)
+				for(int k = 0; k < boxCountZ; k ++)
 				{
 					boxes[i,j,k] = new FlockBox();
-					boxes[i,j,k].SetNeighborhood(i,j,k,boxCount);
+					boxes[i,j,k].SetNeighborhood(i,j,k,boxCountX,boxCountY,boxCountZ);
 				}
 			}
 		}
@@ -75,11 +76,11 @@ public class FlockManager : MonoBehaviour
 	{
 		List<FlockMember> removable = new List<FlockMember>();
 
-		for(int i = 0; i < boxCount; i ++)
+		for(int i = 0; i < boxCountX; i ++)
 		{
-			for(int j = 0; j < boxCount; j ++)
+			for(int j = 0; j < boxCountY; j ++)
 			{
-				for(int k = 0; k < boxCount; k ++)
+				for(int k = 0; k < boxCountZ; k ++)
 				{
 					foreach(FlockMember f in boxes[i,j,k].pod)
 					{
@@ -160,7 +161,7 @@ public class FlockManager : MonoBehaviour
 		float height = upperBound.position.y - lowerBound.position.y;
 		float depth = upperBound.position.z - lowerBound.position.z;
 		float z = f.transform.position.z - lowerBound.position.z;
-		return new IJK(Mathf.FloorToInt(x / width * boxCount), Mathf.FloorToInt(y / height * boxCount), Mathf.FloorToInt(z / depth * boxCount));
+		return new IJK(Mathf.FloorToInt(x / width * boxCountX), Mathf.FloorToInt(y / height * boxCountY), Mathf.FloorToInt(z / depth * boxCountZ));
 	}
 
 	protected void Rebox(List<FlockMember> removable)
@@ -168,10 +169,10 @@ public class FlockManager : MonoBehaviour
 		// TODO: cheap fix of ArrayIndexOutOfRange with modulo: solve actual problem instead 
 		foreach(FlockMember f in removable)
 		{
-			if(boxes[f.oldBox.i % boxCount,f.oldBox.j % boxCount,f.oldBox.k % boxCount].pod.Contains(f))  
+			if(boxes[f.oldBox.i % boxCountX,f.oldBox.j % boxCountY,f.oldBox.k % boxCountZ].pod.Contains(f))  
 			{
-				boxes[f.oldBox.i % boxCount,f.oldBox.j % boxCount,f.oldBox.k % boxCount].pod.Remove(f);
-				boxes[f.newBox.i % boxCount,f.newBox.j % boxCount,f.newBox.k % boxCount].pod.Add(f); 
+				boxes[f.oldBox.i % boxCountX,f.oldBox.j % boxCountY,f.oldBox.k % boxCountZ].pod.Remove(f);
+				boxes[f.newBox.i % boxCountX,f.newBox.j % boxCountY,f.newBox.k % boxCountZ].pod.Add(f); 
 			}
 		}
 	}
@@ -204,11 +205,11 @@ public class FlockBox
 		return new VHelper(avg, count);
 	}
 
-	public void SetNeighborhood(int i, int j, int k, int boxCount)
+	public void SetNeighborhood(int i, int j, int k, int boxCountX, int boxCountY, int boxCountZ)
 	{
-		int[] iList = CreateArray(i, boxCount);
-		int[] jList = CreateArray(j, boxCount);
-		int[] kList = CreateArray(k, boxCount);
+		int[] iList = CreateArray(i, boxCountX);
+		int[] jList = CreateArray(j, boxCountY);
+		int[] kList = CreateArray(k, boxCountZ);
 
 		neighbors = new IJK[((iList.Length * jList.Length * kList.Length))];
 
@@ -230,17 +231,19 @@ public class FlockBox
 
 	protected int[] CreateArray(int val, int boxCount)
 	{
-		if(val > 0 && val < boxCount - 1)
-		{
-			int[] arr = {val - 1, val, val + 1};
-			return arr;
+				if(boxCount == 1) {
+						int[] arr = {val};
+						return arr;
+				} else {
+						if (val > 0 && val < boxCount - 1) {
+								int[] arr = {val - 1, val, val + 1};
+								return arr;
+						} else {
+								int[] arr = {val == 0 ? val : val - 1, val == 0 ? val + 1 : val};
+								return arr;
+						}
+				}
 		}
-		else
-		{
-			int[] arr = {val == 0 ? val : val - 1, val == 0 ? val + 1 : val};
-			return arr;
-		}
-	}
 
 	//TODO: create method that gets all flock values (e.g. average velocity, position, etc.) for each box once per frame, and flockmembers can access that information.
 	//seems this would be much more efficient than each flockmember assessing the whole box each time

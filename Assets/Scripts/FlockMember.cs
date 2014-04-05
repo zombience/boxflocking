@@ -31,8 +31,9 @@ public class FlockMember : MonoBehaviour
 		curValues =  box.GetLocalFlockValues(this);
 
 		velocity = Vector3.Lerp(velocity, 
-		                        Vector3.ClampMagnitude((velocity * FlockManager.settings.individuality) + (AverageVelocity(box) * FlockManager.settings.coherence), 
-		                       FlockManager.settings.maxVelocity), Time.fixedDeltaTime * FlockManager.settings.acceleration); 
+		                        Vector3.ClampMagnitude(FlockManager.settings.noise*Random.onUnitSphere*FlockManager.settings.maxVelocity+(velocity * FlockManager.settings.individuality) + (AverageVelocity(box) * FlockManager.settings.coherence), 
+		                       FlockManager.settings.maxVelocity), Time.fixedDeltaTime * FlockManager.settings.acceleration);
+		velocity *= FlockManager.settings.maxVelocity / Vector3.Magnitude (velocity);
 		trans.position += velocity * speed;
 	}
 

@@ -150,7 +150,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1267536205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -181,17 +181,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe708048fc484b17a0f9ccc803516a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCount: 8
+  boxCountX: 30
+  boxCountY: 30
+  boxCountZ: 1
   lowerBound: {fileID: 1396337231}
   upperBound: {fileID: 1824347092}
   flockPrefab: {fileID: 11400000, guid: 87412c6355a3247ffa38c5f27788077e, type: 2}
   flockSettings:
-    range: 20
-    maxVelocity: 1
-    acceleration: .100000001
-    coherence: .100000001
-    individuality: .800000012
+    range: 2
+    maxVelocity: .811111093
+    acceleration: 5
+    coherence: 1
+    individuality: .00100000005
     seekCenter: 0
+    noise: 2
   flockSize: 800
 --- !u!4 &1269474519
 Transform:
@@ -228,7 +231,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1396337230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -100, y: -100, z: -100}
+  m_LocalPosition: {x: -30, y: -30, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1269474519}
@@ -280,7 +283,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1824347091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 100, z: 100}
+  m_LocalPosition: {x: 30, y: 30, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1269474519}
