@@ -76,6 +76,8 @@ public class FlockManager : MonoBehaviour
 	{
 		List<FlockMember> removable = new List<FlockMember>();
 
+
+
 		for(int i = 0; i < boxCountX; i ++)
 		{
 			for(int j = 0; j < boxCountY; j ++)
@@ -86,59 +88,103 @@ public class FlockManager : MonoBehaviour
 					{
 						f.Move(boxes[i,j,k]);
 
+						 
 						if(f.trans.position.x <= lowerBound.position.x || f.trans.position.x >= upperBound.position.x)
 						{
-							f.velocity = Vector3.Reflect(f.velocity, Vector3.right);
-							if(f.trans.position.x <= lowerBound.position.x) 
-							{
-								Vector3 pos = f.trans.position;
-								pos.x = (lowerBound.position.x - f.trans.position.x) + lowerBound.position.x;
-								f.trans.position = pos;
-							}
 
-							else
-							{
-								Vector3 pos = f.trans.position;
-								pos.x = (upperBound.position.x - f.trans.position.x) + upperBound.position.x;
-								f.trans.position = pos;
+							if(FlockManager.settings.asteroidsX){
+								if(f.trans.position.x <= lowerBound.position.x){
+									Vector3 pos = f.trans.position;
+									pos.x = (pos.x-lowerBound.position.x)+upperBound.position.x;
+									f.trans.position = pos;
+									         } else {
+									Vector3 pos = f.trans.position;
+									pos.x = (pos.x-upperBound.position.x)+lowerBound.position.x;
+									f.trans.position = pos;
+									}
+							} else{
+								f.velocity = Vector3.Reflect(f.velocity, Vector3.right);
+								if(f.trans.position.x <= lowerBound.position.x) 
+								{
+									Vector3 pos = f.trans.position;
+									pos.x = (lowerBound.position.x - f.trans.position.x) + lowerBound.position.x;
+									f.trans.position = pos;
+								}
+								
+								else
+								{
+									Vector3 pos = f.trans.position;
+									pos.x = (upperBound.position.x - f.trans.position.x) + upperBound.position.x;
+									f.trans.position = pos;
+								}
 							}
 						}
+				
+
+						
 						if(f.trans.position.y <= lowerBound.position.y|| f.trans.position.y >= upperBound.position.y)
 						{
-							f.velocity = Vector3.Reflect(f.velocity, Vector3.up);
-							if(f.trans.position.y <= lowerBound.position.y) 
-							{
-								Vector3 pos = f.trans.position;
-								pos.y = (lowerBound.position.y - f.trans.position.y) + lowerBound.position.y;
-								f.trans.position = pos;
-							}
 							
-							else
-							{
-								Vector3 pos = f.trans.position;
-								pos.y = (upperBound.position.y - f.trans.position.y) + upperBound.position.y;
-								f.trans.position = pos;
+							if(FlockManager.settings.asteroidsY){
+								if(f.trans.position.y <= lowerBound.position.y){
+									Vector3 pos = f.trans.position;
+									pos.y = (pos.y-lowerBound.position.y)+upperBound.position.y;
+									f.trans.position = pos;
+								} else {
+									Vector3 pos = f.trans.position;
+									pos.y = (pos.y-upperBound.position.y)+lowerBound.position.y;
+									f.trans.position = pos;
+								}
+							} else{
+								f.velocity = Vector3.Reflect(f.velocity, Vector3.up);
+								if(f.trans.position.y <= lowerBound.position.y) 
+								{
+									Vector3 pos = f.trans.position;
+									pos.y = (lowerBound.position.y - f.trans.position.y) + lowerBound.position.y;
+									f.trans.position = pos;
+								}
+								
+								else
+								{
+									Vector3 pos = f.trans.position;
+									pos.y = (upperBound.position.y - f.trans.position.y) + upperBound.position.y;
+									f.trans.position = pos;
+								}
 							}
 						}
+
+
 						if(f.trans.position.z <= lowerBound.position.z|| f.trans.position.z >= upperBound.position.z)
 						{
-							f.velocity = Vector3.Reflect(f.velocity, Vector3.forward);
-							if(f.trans.position.z <= lowerBound.position.z) 
-							{
-								Vector3 pos = f.trans.position;
-								pos.z = (lowerBound.position.z - f.trans.position.z) + lowerBound.position.z;
-								f.trans.position = pos;
-							}
-							
-							else
-							{
-								Vector3 pos = f.trans.position;
-								pos.z = (upperBound.position.z - f.trans.position.z) + upperBound.position.z;
-								f.trans.position = pos;
-							}
 
+							if(FlockManager.settings.asteroidsZ){
+								if(f.trans.position.z <= lowerBound.position.z){
+									Vector3 pos = f.trans.position;
+									pos.z = (pos.z-lowerBound.position.z)+upperBound.position.z;
+									f.trans.position = pos;
+								} else {
+									Vector3 pos = f.trans.position;
+									pos.z = (pos.z-upperBound.position.z)+lowerBound.position.z;
+									f.trans.position = pos;
+								}
+							} else{
+								f.velocity = Vector3.Reflect(f.velocity, Vector3.forward);
+								if(f.trans.position.z <= lowerBound.position.z) 
+								{
+									Vector3 pos = f.trans.position;
+									pos.z = (lowerBound.position.z - f.trans.position.z) + lowerBound.position.z;
+									f.trans.position = pos;
+								}
+								
+								else
+								{
+									Vector3 pos = f.trans.position;
+									pos.z = (upperBound.position.z - f.trans.position.z) + upperBound.position.z;
+									f.trans.position = pos;
+								}
+								
+							}
 						}
-
 
 						f.oldBox = new IJK(f.newBox.i, f.newBox.j, f.newBox.k);
 						f.newBox = Checkbox(f);

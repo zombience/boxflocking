@@ -10,5 +10,9 @@ public class FlockSettings
 	public float coherence; // how much weight to give to neighbors' average velocity
 	public float individuality;
 	public float seekCenter; // how much flockmember aims for center of the flock
-	public float noise;
+	public float noise; 
+	public bool asteroidsX;
+	public bool asteroidsY;
+	public bool asteroidsZ;
+
 }
