@@ -292,7 +292,6 @@ MonoBehaviour:
   upperBound: {fileID: 1824347092}
   flockPrefab: {fileID: 11400000, guid: 87412c6355a3247ffa38c5f27788077e, type: 2}
   flockSettings:
-<<<<<<< HEAD
     softBoundaries: 0
     softBoundaryForce: 1
     range: 20
@@ -303,20 +302,12 @@ MonoBehaviour:
     noise: 1.5
     separation: 0
     closenessCutoff: 0
-  flockSize: 300
-=======
-    range: 2
-    maxVelocity: .811111093
-    acceleration: 5
-    coherence: 1
-    individuality: .00100000005
+    individuality: 0
     seekCenter: 0
-    noise: 2
-    asteroidsX: 1
-    asteroidsY: 1
+    asteroidsX: 0
+    asteroidsY: 0
     asteroidsZ: 0
-  flockSize: 1000
->>>>>>> d29a6f61b703260f653fea60ced7a65dd21ee8c2
+  flockSize: 300
 --- !u!4 &1269474519
 Transform:
   m_ObjectHideFlags: 0
@@ -327,7 +318,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1436518630}
   - {fileID: 1396337231}
   - {fileID: 1824347092}
   m_Father: {fileID: 0}
@@ -353,11 +343,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1396337230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
   m_LocalPosition: {x: -100, y: -100, z: -100}
-=======
-  m_LocalPosition: {x: -30, y: -30, z: -1}
->>>>>>> d29a6f61b703260f653fea60ced7a65dd21ee8c2
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1269474519}
@@ -385,14 +371,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-<<<<<<< HEAD
   m_Children:
   - {fileID: 445384309}
   m_Father: {fileID: 0}
-=======
-  m_Children: []
-  m_Father: {fileID: 1269474519}
->>>>>>> d29a6f61b703260f653fea60ced7a65dd21ee8c2
 --- !u!1 &1824347091
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,11 +396,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1824347091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
   m_LocalPosition: {x: 100, y: 100, z: 100}
-=======
-  m_LocalPosition: {x: 30, y: 30, z: 1}
->>>>>>> d29a6f61b703260f653fea60ced7a65dd21ee8c2
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1269474519}
