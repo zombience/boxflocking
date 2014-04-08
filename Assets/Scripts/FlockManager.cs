@@ -18,6 +18,8 @@ public class FlockManager : MonoBehaviour
 
 	public static FlockManager instance;
 
+	protected Vector3 center;
+
 	#region Unity Methods
 	void Start ()
 	{
@@ -32,7 +34,11 @@ public class FlockManager : MonoBehaviour
 			{
 				for(int k = 0; k < boxCountZ; k ++)
 				{
-					boxes[i,j,k] = new FlockBox();
+					if(FlockManager.settings.softBoundaries && (i == 0 || i == boxCountX - 1 || j == 0 || j == boxCountY - 1 || k == 0 || k == boxCountZ -1))
+						boxes[i,j,k] = new SoftBoundaryBox(lowerBound, upperBound);
+					else
+						boxes[i,j,k] = new FlockBox();
+
 					boxes[i,j,k].SetNeighborhood(i,j,k,boxCountX,boxCountY,boxCountZ);
 				}
 			}
@@ -62,6 +68,7 @@ public class FlockManager : MonoBehaviour
 
 			FlockMember f = (FlockMember)Instantiate(flockPrefab, pos, Quaternion.identity);
 			f.transform.forward = Random.onUnitSphere;
+			f.transform.parent = transform; // This is purely for visual organization in the heirarchy window
 			FillBox(f);
 		}
 	}
@@ -152,6 +159,19 @@ public class FlockManager : MonoBehaviour
 		Rebox(removable);
 	}
 
+	public FlockMember GetRandomFlockMember()
+	{
+
+		IJK rand = new IJK(Random.Range(0, boxCountX - 1), Random.Range(0, boxCountY -1), Random.Range(0, boxCountZ -1));
+		Debug.Log ("searching for box member: " + rand.i + " " + rand.j + " " + rand.k + " vs. " + boxCountX + "," + boxCountY + "," + boxCountZ);
+		while(boxes[rand.i, rand.j, rand.k].pod.Count < 1)
+		{
+			rand = new IJK(Random.Range(0, boxCountX -1), Random.Range(0, boxCountY -1), Random.Range(0, boxCountZ -1));
+			Debug.Log("searching for non null flockmember");
+		}
+
+		return boxes[rand.i, rand.j, rand.k].pod[0];
+	}
 
 	protected IJK Checkbox(FlockMember f)
 	{
@@ -185,24 +205,35 @@ public class FlockBox
 	public IJK[] neighbors;
 	public List<FlockMember> pod = new List<FlockMember>();
 
-	public VHelper GetLocalFlockValues(FlockMember reference)
-	{
-		Vector3 avg = Vector3.zero;
-		int count = 0;
+	public FlockBox(){}
 
+	public virtual VHelper GetLocalFlockValues(FlockMember reference, FlockMember prevClosest = null)
+	{
+		Vector3 avgVel = Vector3.zero;
+		Vector3 avgPos = Vector3.zero;
+		int count = 0;
+		float curDistance = FlockManager.settings.closenessCutoff;
+		FlockMember closest = prevClosest; // prevClosest may be null
 		foreach(FlockMember f in pod)
 		{
-			if(f == reference) // Do not compare flockmember to itself
+			if(f == reference || Vector3.Distance(reference.trans.position, f.trans.position) > FlockManager.settings.range) // Do not compare flockmember to itself or if other is out of range
 				continue;
 
-			if(Vector3.Distance(reference.trans.position, f.trans.position) < FlockManager.settings.range)
+			avgVel += f.velocity;
+			avgPos = f.trans.position;
+			count ++;
+			float dist = Vector3.Distance(reference.trans.position, f.trans.position);
+			if(dist < curDistance)
 			{
-				avg += f.velocity;
-				count ++;
+				closest = f;
+				curDistance = dist;	
 			}
 		}
+		// if we have a previous closest and it is closer than the current box's closest, pass it to the next iteration to compare
+		if(prevClosest != null && Vector3.Distance(prevClosest.trans.position, reference.trans.position) < curDistance)
+			closest = prevClosest; 
 
-		return new VHelper(avg, count);
+		return new VHelper(avgVel, avgPos, count, closest);
 	}
 
 	public void SetNeighborhood(int i, int j, int k, int boxCountX, int boxCountY, int boxCountZ)
@@ -231,23 +262,38 @@ public class FlockBox
 
 	protected int[] CreateArray(int val, int boxCount)
 	{
-				if(boxCount == 1) {
-						int[] arr = {val};
+		if(boxCount == 1) {
+				int[] arr = {val};
+				return arr;
+		} else {
+				if (val > 0 && val < boxCount - 1) {
+						int[] arr = {val - 1, val, val + 1};
 						return arr;
 				} else {
-						if (val > 0 && val < boxCount - 1) {
-								int[] arr = {val - 1, val, val + 1};
-								return arr;
-						} else {
-								int[] arr = {val == 0 ? val : val - 1, val == 0 ? val + 1 : val};
-								return arr;
-						}
+						int[] arr = {val == 0 ? val : val - 1, val == 0 ? val + 1 : val};
+						return arr;
 				}
-		}
-
-	//TODO: create method that gets all flock values (e.g. average velocity, position, etc.) for each box once per frame, and flockmembers can access that information.
-	//seems this would be much more efficient than each flockmember assessing the whole box each time
+			}
+	}
 }
+//TODO: get soft boundary boxes working
+public class SoftBoundaryBox : FlockBox
+{
+	public Transform lowerBoundary;
+	public Transform upperBoundary;
 
+	public SoftBoundaryBox(){}
+	public SoftBoundaryBox(Transform l, Transform u)
+	{
+		lowerBoundary = l;
+		upperBoundary = u;
+	}
 
+	public override VHelper GetLocalFlockValues (FlockMember reference, FlockMember prevClosest)
+	{
+		VHelper vals = base.GetLocalFlockValues (reference, prevClosest);
+		vals.vel = ((lowerBoundary.position + upperBoundary.position) / 2) * FlockManager.settings.softBoundaryForce; // aim velocity towards the center of the box for a "soft" boundary effect
+		return vals;
+	}
+}
 

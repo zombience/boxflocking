@@ -27,19 +27,41 @@ public struct IJK
 public struct VHelper
 {
 	public Vector3 vel;
-	public float inRangeCount;
-	
+	public Vector3 center; // use to average center of mass
+	public float inRangeCount; // float so that division can be done accurately without cast
+	public FlockMember closest;
+
 	public VHelper(Vector3 _vel, float _val)
 	{
+		this = new VHelper(_vel, Vector3.zero, _val);
+	}
+
+	public VHelper(Vector3 _vel, Vector3 c, float _val)
+	{
+		this = new VHelper(_vel, Vector3.zero, _val, null);
+	}
+
+	public VHelper(Vector3 _vel, Vector3 c, float _val, FlockMember f)
+	{
 		vel = _vel;
+		center = c;
 		inRangeCount = _val;
+		closest = f;
 	}
 	
-	public void AddVelVal(VHelper vh)
+	public void AddValues(VHelper vh)
 	{
 		vel += vh.vel;
+		center += vh.center;
 		inRangeCount += vh.inRangeCount;
 	}
+
+	public void SetClosest(FlockMember f)
+	{
+		closest = f;
+	}
+
+
 }
 
 
