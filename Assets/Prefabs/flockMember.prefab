@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: flockMember
   m_TagString: Untagged
@@ -29,6 +30,7 @@ Transform:
   m_LocalScale: {x: .5, y: .5, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -47,9 +49,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!33 &3300000
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -73,6 +74,21 @@ MonoBehaviour:
   hasMoved: 0
   trans: {fileID: 0}
   neighborhood: []
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a742dee4b1996464eb5008e8815bd8ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  high: {r: 0, g: .87843138, b: 0, a: 0}
+  low: {r: 0, g: 0, b: .725490212, a: 0}
+  band: 0
+  maxInput: 33
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

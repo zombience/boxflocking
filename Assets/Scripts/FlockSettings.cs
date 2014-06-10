@@ -13,10 +13,11 @@ public class FlockSettings
 
 	public float seekCenterMass; // how much flockmember aims for center of the flock
 	public float noise;
-	public float separation; // how much weight to give to keeping distance from neighbors
+	public float audioNoiseMod;
+	public float noiseAccumulateSmoothing;
+	public float repulsion; // how much weight to give to keeping distance from neighbors
 	public float closenessCutoff; // if neighbors are closer than this, try to move away
 
-	public float individuality;
 	public float seekCenter; // how much flockmember aims for center of the flock
 
 	public bool asteroidsX;

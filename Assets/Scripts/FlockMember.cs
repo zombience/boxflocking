@@ -17,13 +17,23 @@ public class FlockMember : MonoBehaviour
 	public List<FlockMember> neighborhood = new List<FlockMember>();
 	protected VHelper curValues;
 	protected Renderer rend;
-
+	protected int band;
+	protected Vector3 noiseDirection;
+	protected Vector3 noiseAccumulate;
 	#region Unity Methods
 	void Start ()
 	{
 		velocity = Random.insideUnitSphere;
 		trans = transform;
 		rend = renderer;
+		band = Random.Range(0, AudioAnalyzer.BANDS);
+		if(band == 0 || band == 1)
+			noiseDirection = Vector3.forward;
+		else if(band == 2)
+			noiseDirection = Vector3.right;
+		else 
+			noiseDirection = Vector3.up;
+
 	}
 	#endregion
 
@@ -72,7 +82,8 @@ public class FlockMember : MonoBehaviour
 		VHelper values = GetNeighborFlockData(box);
 		Vector3 v = Vector3.zero;
 		/* Noise */
-		v += Random.onUnitSphere * FlockManager.settings.noise;
+		noiseAccumulate = Vector3.Lerp(noiseAccumulate, new Vector3(AudioAnalyzer.output[0], AudioAnalyzer.output[1], AudioAnalyzer.output[2]), Time.fixedDeltaTime * FlockManager.settings.noiseAccumulateSmoothing);
+		v += Random.onUnitSphere * (FlockManager.settings.noise + Vector3.Dot(noiseDirection, noiseAccumulate));
 		/* Basic Direction Follow */
 		v += values.vel.normalized * FlockManager.settings.coherence;
 		/* cluster towards center of current grouping */
