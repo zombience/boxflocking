@@ -139,7 +139,7 @@ Light:
   serializedVersion: 3
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .5
+  m_Intensity: 2.5
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -207,6 +207,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 8a4ea07dfe602401bb0f241908929227, type: 2}
+      propertyPath: climbRate
+      value: .0834999979
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 8a4ea07dfe602401bb0f241908929227, type: 2}
+      propertyPath: fallRate
+      value: .0828000009
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a4ea07dfe602401bb0f241908929227, type: 2}
   m_RootGameObject: {fileID: 648055405}
@@ -251,8 +259,8 @@ MonoBehaviour:
   - 2500
   - 3500
   easeAmplitude: 1
-  climbRate: .0154999997
-  fallRate: .0154999997
+  climbRate: .0834999979
+  fallRate: .0828000009
   passThrough: 0
 --- !u!82 &648055407
 AudioSource:
@@ -500,7 +508,7 @@ MonoBehaviour:
     asteroidsX: 0
     asteroidsY: 0
     asteroidsZ: 0
-  flockSize: 600
+  flockSize: 400
 --- !u!4 &1269474519
 Transform:
   m_ObjectHideFlags: 0

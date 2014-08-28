@@ -16,7 +16,7 @@ public class AnalyzeBakedAudio : MonoBehaviour
 	private float[] freqData = new float[8192];
 
 	private float[] band;
-	private int index = 0;
+
 
 
 	#endregion
